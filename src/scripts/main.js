@@ -2,14 +2,15 @@
 
 const persons = [...document.querySelector('ul').querySelectorAll('li')];
 
+// helpful function
+function formatToValue(string) {
+  return string.replaceAll('$', '').replaceAll(',', '');
+}
+
 function sortList(list) {
   list.sort((personA, personB) => {
-    const x = Number(
-      personA.dataset.salary.replaceAll('$', '').replaceAll(',', ''),
-    );
-    const y = Number(
-      personB.dataset.salary.replaceAll('$', '').replaceAll(',', ''),
-    );
+    const x = Number(formatToValue(personA.dataset.salary));
+    const y = Number(formatToValue(personB.dataset.salary));
 
     return y - x;
   });
@@ -23,11 +24,14 @@ function sortList(list) {
 }
 
 function getEmployees(list) {
-  const result = [];
-
-  for (let i = 0; i < list.length; i++) {
-    result.push(list[i].dataset);
-  }
+  const result = list.map((node) => {
+    return {
+      name: node.textContent.trim(),
+      position: node.dataset.position,
+      salary: node.dataset.salary,
+      age: node.dataset.age,
+    };
+  });
 
   return result;
 }
